@@ -1,0 +1,51 @@
+﻿@model MyWebSite.Models.Inpage
+
+
+<div class="container">
+    @if (Model.TotalPages > 0)  // se non ci sono elementi l'impaginazione non è visibile'
+    {
+        @*Mostro l'elenco delle pagine*@
+        <ul class="pagination justify-content-end">
+
+            @*Gestisco la prima e preview*@
+            @if (Model.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Aziendas" asp-action="Index"
+               asp-route-pg="1">Prima Pg </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Aziendas" asp-action="Index"
+               asp-route-pg="@(Model.CurrentPage-1)">Precedente </a>
+                </li>
+
+            }
+            @*Gestisco i link alle pagine centrali*@
+            @for (var pagNum = Model.StartPAge; pagNum <= Model.EndPage; pagNum++)
+            {
+                <li class="page-item @(pagNum == Model.CurrentPage ? "active" : "")">
+
+                    <a class="page-link" asp-controller="Aziendas"
+               asp-action="Index" asp-route-pg="@pagNum"> @pagNum</a>
+                    @*Passo pg ossia il parametro pg per skippare i record*@
+                </li>
+            }
+
+            @*Gestisco la l'ultima' e il next*@
+            @if (Model.CurrentPage < Model.EndPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Aziendas"
+               asp-action="Index" asp-route-pg="@Model.EndPage">Ultima Pg </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Aziendas"
+               asp-action="Index" asp-route-pg="@(Model.CurrentPage+1)">Successiva </a>
+                </li>
+
+            }
+
+        </ul>
+    }
+</div>
+

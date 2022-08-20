@@ -1,0 +1,68 @@
+﻿@model IEnumerable<MyWebSite.Models.Azienda>
+
+@{
+    ViewData["Title"] = "Index";
+
+    Inpage linkpagine = new Inpage();
+    
+    int PageN = 0;
+
+    if (ViewBag.Inpage != null)
+    {
+        linkpagine = ViewBag.Inpage;
+        PageN = linkpagine.CurrentPage;
+
+    }
+}
+
+<h1>Elenco Aziende</h1>
+
+<p>
+    <a class="bg-success text-white text-decoration-none py-1 px-2 rounded" asp-action="Create">Aggiungi</a>
+</p>
+
+<partial name="_Inpage" model="@linkpagine" /> @*Inserisco la paginazione usando la parzial view*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nome Azienda
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Settore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Città)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Indirizzo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeAzienda)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Settore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Città)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Indirizzo)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AziendaId">Modifica</a> |
+                    <a asp-action="Details" asp-route-id="@item.AziendaId">Mostra</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AziendaId">Elimina</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
