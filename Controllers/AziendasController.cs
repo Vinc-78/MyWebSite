@@ -20,9 +20,17 @@ namespace MyWebSite.Controllers
         }
 
         // GET: Aziendas
-        public async Task<IActionResult> Index(int pg = 1)
+        public async Task<IActionResult> Index(string? ricerca, int pg = 1 )
         {
             List<Azienda> aziendaList = await _context.Azienda.ToListAsync();
+
+            //la parte che gestisce la searchBar
+
+            if (!String.IsNullOrEmpty(ricerca))
+            {
+                aziendaList = aziendaList.Where(s =>( s.NomeAzienda!.Contains(ricerca) 
+                || s.Settore!.Contains(ricerca) || s.Città!.Contains(ricerca) || s.Indirizzo!.Contains(ricerca))).ToList();
+            }
 
             //parte per gestire l'impaginazione
             const int pageSize = 4; //quanti record per pagina

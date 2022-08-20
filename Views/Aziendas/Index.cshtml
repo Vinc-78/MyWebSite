@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 
     Inpage linkpagine = new Inpage();
-    
+
     int PageN = 0;
 
     if (ViewBag.Inpage != null)
@@ -15,13 +15,40 @@
     }
 }
 
-<h1>Elenco Aziende</h1>
 
-<p>
-    <a class="bg-success text-white text-decoration-none py-1 px-2 rounded" asp-action="Create">Aggiungi</a>
-</p>
+<div class="row align-items-center my-4">
 
-<partial name="_Inpage" model="@linkpagine" /> @*Inserisco la paginazione usando la parzial view*@
+    <div class="col-3">
+        <h2>Elenco Aziende</h2>
+    </div>
+
+    <div class="col-8 text-end ">
+        <a class="bg-success text-white text-decoration-none py-1 px-2 rounded"
+           asp-action="Create">Aggiungi</a>
+    </div>
+
+</div>
+
+
+<div class="row align-items-center mb-3">
+
+    <div class="col">
+        <form asp-controller="Aziendas" asp-action="Index" method="get">
+            <p>
+                <span class="fs-3"> Ricerca: </span> <input type="text" name="ricerca" />
+                <input class="bg-primary text-white border-white border-2 rounded" type="submit" value="Inizia" />
+                <input class="bg-white border-1 rounded" type="submit" value="Tutti" />
+            </p>
+        </form>
+    </div>
+
+    <div class="col">
+        <partial name="_Inpage" model="@linkpagine" /> @*Inserisco la paginazione usando la parzial view*@
+    </div>
+
+</div>
+
+
 
 <table class="table">
     <thead>
