@@ -4,19 +4,28 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<div class="row align-items-center my-4">
+
+    <div class="col-3">
+        <h2>Storico interventi</h2>
+    </div>
+
+    <div class="col-8 text-end ">
+        <a class="bg-warning fw-bold text-black text-decoration-none py-1 px-2 rounded"
+           asp-action="Create">Inserisci nuovo intervento</a>
+    </div>
+
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TipoIntervento)
+                Tipo Intervento
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataIntervento)
+                Data Apertura 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Completato)

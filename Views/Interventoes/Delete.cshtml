@@ -12,13 +12,13 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoIntervento)
+            Tipo Intervento
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TipoIntervento)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataIntervento)
+            Data Apertura
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DataIntervento)
@@ -46,6 +46,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="InterventoId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Vai storico interventi</a>
     </form>
 </div>

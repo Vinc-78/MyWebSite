@@ -111,12 +111,7 @@ namespace MyWebSite.Controllers
 
             var Azienda = _context.Azienda.Where(m => m.AziendaId == intervento.AziendaID).FirstOrDefault();
 
-            //mi serve anche l'id dell'azienda in modo che il form della view passa AziendaID(campo hidden) 
-
-            //lo prendo da intervento.AziendaId 
-
-
-            // qui passo il nome della azienda alla view e lo utilizzo solo li
+            // qui passo il nome della azienda alla view 
             ViewData["AziendaNome"] = Azienda.NomeAzienda;
             //ViewData["AziendaID"] = new SelectList(_context.Azienda, "AziendaId", "AziendaId", intervento.AziendaID);
             return View(intervento);
@@ -137,7 +132,7 @@ namespace MyWebSite.Controllers
             
                 try
                 {
-                    if (esito = true) intervento.Completato = true;
+                    if (esito == true) intervento.Completato = true;
                     else intervento.Completato = false;
 
                     

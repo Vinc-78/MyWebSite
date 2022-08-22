@@ -11,13 +11,13 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoIntervento)
+            Tipo Intervento
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TipoIntervento)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DataIntervento)
+           Data Apertura
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DataIntervento)
@@ -43,6 +43,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.InterventoId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="bg-warning fw-bold text-black text-decoration-none py-1 px-2 rounded" 
+    asp-action="Edit" asp-route-id="@Model?.InterventoId">Modifica </a> |
+    <a asp-action="Index">Vai storico interventi</a>
 </div>

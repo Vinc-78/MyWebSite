@@ -3,10 +3,25 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<div class="col-3">
+</div>
+<h1>Modifica Dati Intervento</h1>
 
-<h1>Edit</h1>
+<div class="row align-items-end">
+    <div class="col-4">
+        <h4>Intervento per Azienda : </h4>
+    </div>
+    <div class="col-5">
+        <div class="form-group">
+            <label for="NomeAzienda" class="control-label"></label>
+            <input name="NomeAzienda" class="form-control text-center fw-bold" value="@ViewBag.AziendaNome" disabled />
+            @*Mi serve solo per mostrare il nome dell'azienda, non voglio che sia modificabile *@
 
-<h4>Intervento</h4>
+        </div>
+    </div>
+</div>
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,51 +29,52 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="InterventoId" />
 
-             <input type="hidden" asp-for="AziendaID" />  @*Mi serve per passare il campo al controller*@
+            <input type="hidden" asp-for="AziendaID" />
+            @*Mi serve per passare il campo al controller
+                mi serve anche l'id dell'azienda in modo che il form della view passa AziendaID
+            *@
 
             <div class="form-group">
-                <label asp-for="TipoIntervento" class="control-label"></label>
+                <label asp-for="TipoIntervento" class="control-label">Tipo Intervento</label>
                 <input asp-for="TipoIntervento" class="form-control" />
                 <span asp-validation-for="TipoIntervento" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DataIntervento" class="control-label"></label>
+                <label asp-for="DataIntervento" class="control-label">Data apertura</label>
                 <input asp-for="DataIntervento" class="form-control" />
                 <span asp-validation-for="DataIntervento" class="text-danger"></span>
             </div>
             <div class="form-group">
-                 @{
-                        string Esito = "";
-                        if (Model.Completato == false) Esito = "Non Completato";
-                        else Esito = "Completato";
-                    }
-                    
-                <label  class="control-label"> Attualmente: <span class="fw-bold">@Esito</span>  </label>
-                <label  for="Esito" class="control-label"> </label>
-                <select name="Esito" class="form-control" >
-                    <option value = " "> </option>
-                    <option value = "true">Completato</option>
-                    <option value = "false">Non Completato</option>
+                @{
+                    string Esito = "";
+                    if (Model.Completato == false) Esito = "Non Completato";
+                    else Esito = "Completato";
+                }
+
+                <label class="control-label"> Attualmente: <span class="fw-bold">@Esito</span>  </label>
+                <label for="Esito" class="control-label"> </label>
+                <select name="Esito" class="form-control" required="required">
+                    <option value=""> </option>
+                    <option value="true">Completato</option>
+                    <option value="false">Non Completato</option>
                 </select>
-                
+
             </div>
+
             <div class="form-group">
-                <label for="NomeAzienda" class="control-label"></label>
-                <input name="NomeAzienda" class="form-control" value="@ViewBag.AziendaNome"  disabled />
-               
-                
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Salva"
+                       class="bg-success border-0 text-white text-decoration-none py-1 px-2 rounded" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Vai storico interventi</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }
