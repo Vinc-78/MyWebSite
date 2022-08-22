@@ -1,4 +1,6 @@
-﻿@model IEnumerable<MyWebSite.Models.Intervento>
+﻿@*@model IEnumerable<MyWebSite.Models.Intervento>*@
+
+@model MyWebSite.Models.FiltroIntervento
 
 @{
     ViewData["Title"] = "Index";
@@ -18,6 +20,24 @@
     </div>
 
 </div>
+
+@*Sezione di ricerca / filtri *@
+
+<div class="container align-content-center">
+
+    <form asp-controller="Interventoes" asp-action="Index" method="get">
+        <div class="row-cols-3"> @*Filtro per tipo di intervento*@
+            <p class="d-flex flex-column">
+                <label asp-for="InterventoType"> Tipo Di Intervento </label>
+                <select asp-for="InterventoType" asp-items="Model.TipoIntervento">
+                    <option value="">All</option>
+                </select>
+            </p>
+        </div>
+        <input type="submit" value="Filtra" />
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -25,26 +45,27 @@
                 Tipo Intervento
             </th>
             <th>
-                Data Apertura 
+                Data Apertura
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Completato)
+                @Html.DisplayNameFor(model => model.Interventos[0].Completato)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Azienda)
+                @Html.DisplayNameFor(model => model.Interventos[0].Azienda)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoIntervento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataIntervento)
-            </td>
+        @foreach (var item in Model.Interventos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoIntervento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataIntervento)
+                </td>
                 <td>
                     @{
                         string Esito = "";
@@ -52,17 +73,93 @@
                         else Esito = "Completato";
                     }
                     @Esito
-                @*@Html.DisplayFor(modelItem => item.Completato)*@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Azienda.NomeAzienda)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.InterventoId">Modifica</a> |
-                <a asp-action="Details" asp-route-id="@item.InterventoId">Dettagli</a> |
-                <a asp-action="Delete" asp-route-id="@item.InterventoId">Elimina</a>
-            </td>
-        </tr>
-}
+                    @*@Html.DisplayFor(modelItem => item.Completato)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Azienda.NomeAzienda)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.InterventoId">Modifica</a> |
+                    <a asp-action="Details" asp-route-id="@item.InterventoId">Dettagli</a> |
+                    <a asp-action="Delete" asp-route-id="@item.InterventoId">Elimina</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+
+@*Prima dell inserimento dei Filtri*@
+
+@*
+    @model IEnumerable<MyWebSite.Models.Intervento>
+
+    @{
+    ViewData["Title"] = "Index";
+    }
+
+
+
+    <div class="row align-items-center my-4">
+
+    <div class="col-3">
+    <h2>Storico interventi</h2>
+    </div>
+
+    <div class="col-8 text-end ">
+    <a class="bg-warning fw-bold text-black text-decoration-none py-1 px-2 rounded"
+    asp-action="Create">Inserisci nuovo intervento</a>
+    </div>
+
+    </div>
+    <table class="table">
+    <thead>
+    <tr>
+    <th>
+    Tipo Intervento
+    </th>
+    <th>
+    Data Apertura
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Completato)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Azienda)
+    </th>
+    <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+    <tr>
+    <td>
+    @Html.DisplayFor(modelItem => item.TipoIntervento)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.DataIntervento)
+    </td>
+    <td>
+    @{
+    string Esito = "";
+    if (item.Completato == false) Esito = "Non Completato";
+    else Esito = "Completato";
+    }
+    @Esito
+
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.Azienda.NomeAzienda)
+    </td>
+    <td>
+    <a asp-action="Edit" asp-route-id="@item.InterventoId">Modifica</a> |
+    <a asp-action="Details" asp-route-id="@item.InterventoId">Dettagli</a> |
+    <a asp-action="Delete" asp-route-id="@item.InterventoId">Elimina</a>
+    </td>
+    </tr>
+    }
+    </tbody>
+    </table>
+
+*@

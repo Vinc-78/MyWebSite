@@ -20,10 +20,33 @@ namespace MyWebSite.Controllers
         }
 
         // GET: Interventoes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string InterventoType)
         {
-            var myWebSiteContext = _context.Intervento.Include(i => i.Azienda);
-            return View(await myWebSiteContext.ToListAsync());
+            //gestione filtri
+
+            IQueryable<string> tipoQuery = from m in _context.Intervento
+                                           orderby m.TipoIntervento
+                                           select m.TipoIntervento;
+
+            var interventi = from m in _context.Intervento.Include(i => i.Azienda)
+                             select m;
+
+            if (!string.IsNullOrEmpty(InterventoType))
+            {
+                interventi = interventi.Where(s => s.TipoIntervento!.Contains(InterventoType));
+            }
+
+            var filterList = new FiltroIntervento
+            {
+                TipoIntervento = new SelectList(await tipoQuery.Distinct().ToListAsync()),
+                Interventos = await interventi.ToListAsync()
+            };
+
+            return View(filterList);
+
+            //var myWebSiteContext = _context.Intervento.Include(i => i.Azienda);
+
+            // return View(await myWebSiteContext.ToListAsync());
         }
 
         // GET: Interventoes/Details/5
@@ -60,7 +83,7 @@ namespace MyWebSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Intervento intervento,  Azienda azienda)
+        public async Task<IActionResult> Create(Intervento intervento, Azienda azienda)
         {
             var specificAzienda = _context.Azienda.Where(m => m.NomeAzienda == azienda.NomeAzienda).FirstOrDefault();
 
@@ -74,12 +97,12 @@ namespace MyWebSite.Controllers
                 DataIntervento = intervento.DataIntervento,
                 Completato = intervento.Completato,
                 AziendaID = intervento.AziendaID
-  
+
             };
 
             _context.Add(NewIntervento);
-              await _context.SaveChangesAsync();
-              return RedirectToAction(nameof(Index));
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
 
             //if (ModelState.IsValid)
             //{
@@ -129,30 +152,30 @@ namespace MyWebSite.Controllers
                 return NotFound();
             }
 
-            
-                try
-                {
-                    if (esito == true) intervento.Completato = true;
-                    else intervento.Completato = false;
 
-                    
+            try
+            {
+                if (esito == true) intervento.Completato = true;
+                else intervento.Completato = false;
 
-                    _context.Update(intervento);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
+
+
+                _context.Update(intervento);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InterventoExists(intervento.InterventoId))
                 {
-                    if (!InterventoExists(intervento.InterventoId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
-                return RedirectToAction(nameof(Index));
-            
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
             //ViewData["AziendaID"] = new SelectList(_context.Azienda, "AziendaId", "AziendaId", intervento.AziendaID);
             return View(intervento);
         }
