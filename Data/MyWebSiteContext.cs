@@ -15,5 +15,6 @@ namespace MyWebSite.Data
         }
 
         public DbSet<MyWebSite.Models.Azienda> Azienda { get; set; } = default!;
+        public DbSet<MyWebSite.Models.Intervento> Intervento { get; set; } = default!;
     }
 }

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MyWebSite.Models.Intervento>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoIntervento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataIntervento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Completato)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Azienda)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoIntervento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataIntervento)
+            </td>
+                <td>
+                    @{
+                        string Esito = "";
+                        if (item.Completato == false) Esito = "Non Completato";
+                        else Esito = "Completato";
+                    }
+                    @Esito
+                @*@Html.DisplayFor(modelItem => item.Completato)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Azienda.NomeAzienda)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.InterventoId">Modifica</a> |
+                <a asp-action="Details" asp-route-id="@item.InterventoId">Dettagli</a> |
+                <a asp-action="Delete" asp-route-id="@item.InterventoId">Elimina</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

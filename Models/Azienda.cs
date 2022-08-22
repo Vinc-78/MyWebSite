@@ -14,5 +14,7 @@ namespace MyWebSite.Models
         public string? Città { get; set; }
 
         public string? Indirizzo { get; set; }
+
+        public virtual List<Intervento> Interventos { get; set; } = new List<Intervento>();
     }
 }

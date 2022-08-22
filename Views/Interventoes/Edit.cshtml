@@ -1,0 +1,64 @@
+﻿@model MyWebSite.Models.Intervento
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Intervento</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="InterventoId" />
+
+             <input type="hidden" asp-for="AziendaID" />  @*Mi serve per passare il campo al controller*@
+
+            <div class="form-group">
+                <label asp-for="TipoIntervento" class="control-label"></label>
+                <input asp-for="TipoIntervento" class="form-control" />
+                <span asp-validation-for="TipoIntervento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataIntervento" class="control-label"></label>
+                <input asp-for="DataIntervento" class="form-control" />
+                <span asp-validation-for="DataIntervento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                 @{
+                        string Esito = "";
+                        if (Model.Completato == false) Esito = "Non Completato";
+                        else Esito = "Completato";
+                    }
+                    
+                <label  class="control-label"> Attualmente: <span class="fw-bold">@Esito</span>  </label>
+                <label  for="Esito" class="control-label"> </label>
+                <select name="Esito" class="form-control" >
+                    <option value = " "> </option>
+                    <option value = "true">Completato</option>
+                    <option value = "false">Non Completato</option>
+                </select>
+                
+            </div>
+            <div class="form-group">
+                <label for="NomeAzienda" class="control-label"></label>
+                <input name="NomeAzienda" class="form-control" value="@ViewBag.AziendaNome"  disabled />
+               
+                
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
