@@ -20,26 +20,72 @@ namespace MyWebSite.Controllers
         }
 
         // GET: Interventoes
-        public async Task<IActionResult> Index(string InterventoType)
+        public async Task<IActionResult> Index(string? InterventoType, string? InterventoDate, bool? InterventoState, string? InterventoAzienda)
         {
-            //gestione filtri
 
+
+            //gestione filtri
+            // per ricavare gli elementi da mettere nel select
             IQueryable<string> tipoQuery = from m in _context.Intervento
                                            orderby m.TipoIntervento
                                            select m.TipoIntervento;
 
+            IQueryable<string> dataQuery = from m in _context.Intervento
+                                           orderby m.DataIntervento
+                                           select m.DataIntervento;
+
+            IQueryable<string> AziendaQuery = from m in _context.Intervento.Include(i => i.Azienda)
+                                            orderby m.Azienda.NomeAzienda
+                                            select m.Azienda.NomeAzienda;
+
             var interventi = from m in _context.Intervento.Include(i => i.Azienda)
                              select m;
 
-            if (!string.IsNullOrEmpty(InterventoType))
+            //se filtro per tipo 
+            if (!string.IsNullOrEmpty(InterventoType) && string.IsNullOrWhiteSpace(InterventoDate))
             {
                 interventi = interventi.Where(s => s.TipoIntervento!.Contains(InterventoType));
             }
 
+            //se filtro per tipo e data
+            else if (!string.IsNullOrEmpty(InterventoType) && !string.IsNullOrEmpty(InterventoDate)
+                && !InterventoState.HasValue && string.IsNullOrEmpty(InterventoAzienda))
+            {
+                interventi = interventi.Where(s => s.TipoIntervento!.Contains(InterventoType)
+                && s.DataIntervento!.Contains(InterventoDate));
+            }
+            //se filtro per tipo e data e stato
+            else if (!string.IsNullOrEmpty(InterventoType) && !string.IsNullOrEmpty(InterventoDate)
+                && InterventoState.HasValue && string.IsNullOrEmpty(InterventoAzienda))
+            {
+                interventi = interventi.Where(s => s.TipoIntervento!.Contains(InterventoType)
+                && s.DataIntervento!.Contains(InterventoDate)
+                && (s.Completato == InterventoState) 
+                );
+            }
+
+            //se filtro per tipo e data e stato e nome Azienda
+            else if (!string.IsNullOrEmpty(InterventoType) && !string.IsNullOrEmpty(InterventoDate)
+                && InterventoState.HasValue  && !string.IsNullOrEmpty(InterventoAzienda))
+            {
+                interventi = interventi.Where(s => s.TipoIntervento!.Contains(InterventoType)
+                && s.DataIntervento!.Contains(InterventoDate)
+                && (s.Completato == InterventoState)
+                && s.Azienda.NomeAzienda!.Contains(InterventoAzienda)
+                );
+            }
+
             var filterList = new FiltroIntervento
             {
+                //TipoIntervento aggiorna la lista della select
                 TipoIntervento = new SelectList(await tipoQuery.Distinct().ToListAsync()),
-                Interventos = await interventi.ToListAsync()
+
+                DataIntervento = new SelectList(await dataQuery.Distinct().ToListAsync()),
+
+                AziendaIntervento = new SelectList(await AziendaQuery.Distinct().ToListAsync()),
+
+                // All ritorna gli elementi filtrati
+                AllInterventiFiltrati = await interventi.ToListAsync()
             };
 
             return View(filterList);

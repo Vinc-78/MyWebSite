@@ -25,18 +25,56 @@
 
 <div class="container align-content-center">
 
-    <form asp-controller="Interventoes" asp-action="Index" method="get">
-        <div class="row-cols-3"> @*Filtro per tipo di intervento*@
-            <p class="d-flex flex-column">
-                <label asp-for="InterventoType"> Tipo Di Intervento </label>
-                <select asp-for="InterventoType" asp-items="Model.TipoIntervento">
-                    <option value="">All</option>
-                </select>
-            </p>
+
+    <form id="interventiFilter" asp-controller="Interventoes" asp-action="Index" method="get">
+        <div class="row">
+            <div class="col">
+
+                @*Filtro per tipo di intervento*@
+                <p class="d-flex flex-column">
+                    <label asp-for="InterventoType"> Tipo Di Intervento </label>
+                    <select asp-for="InterventoType" asp-items="Model.TipoIntervento">
+                        <option value=""></option>
+                    </select>
+                </p>
+                <p class="d-flex flex-column">
+                    <label asp-for="InterventoDate"> Data Apertura </label>
+                    <select asp-for="InterventoDate" asp-items="Model.DataIntervento">
+                        <option value=""></option>
+                    </select>
+                </p>
+            </div>
+            <div class="col">
+                @*Filtro per tipo di Completato*@
+                <p class="d-flex flex-column">
+                    <label asp-for="InterventoState"> Stato Intervento </label>
+                    <select asp-for="InterventoState">
+                        <option value=""></option>
+                        <option value="false">Non Completato</option>
+                        <option value="true">Completato</option>
+                    </select>
+                </p>
+                <p class="d-flex flex-column">
+                    <label asp-for="InterventoAzienda"> Nome Azienda </label>
+                    <select asp-for="InterventoAzienda" asp-items="Model.AziendaIntervento">
+                        <option value=""></option>
+                    </select>
+                </p>
+            </div>
         </div>
-        <input type="submit" value="Filtra" />
+        <div class="row align-items-center">
+            <input id="interventiFilter" style="width:150px; margin: auto;" type="submit" value="Filtra" />
+        </div>
+        
+       
+
     </form>
+
+
 </div>
+
+
+
 
 <table class="table">
     <thead>
@@ -48,16 +86,17 @@
                 Data Apertura
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Interventos[0].Completato)
+                @Html.DisplayNameFor(model => model.AllInterventiFiltrati[0].Completato)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Interventos[0].Azienda)
+                @Html.DisplayNameFor(model => model.AllInterventiFiltrati[0].Azienda)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Interventos)
+    
+        @foreach (var item in Model.AllInterventiFiltrati)
         {
             <tr>
                 <td>
@@ -87,6 +126,10 @@
         }
     </tbody>
 </table>
+@if (Model.AllInterventiFiltrati.Count == 0)
+{
+    <h2 style="text-align:center"> Non ci sono elementi per il set del tuo filtro </h2>
+}
 
 
 
