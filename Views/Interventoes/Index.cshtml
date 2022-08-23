@@ -8,7 +8,7 @@
 
 
 
-<div class="row align-items-center my-4">
+<div class="row align-items-center my-4 fixed">
 
     <div class="col-3">
         <h2>Storico interventi</h2>
@@ -23,7 +23,10 @@
 
 @*Sezione di ricerca / filtri *@
 
-<div class="container align-content-center">
+<div class="container  align-content-center py-3 my-3" 
+style="border:1px solid grey;
+
+">
 
 
     <form id="interventiFilter" asp-controller="Interventoes" asp-action="Index" method="get">
@@ -63,7 +66,8 @@
             </div>
         </div>
         <div class="row align-items-center">
-            <input id="interventiFilter" style="width:150px; margin: auto;" type="submit" value="Filtra" />
+            <input id="interventiFilter" style="width:150px; margin: auto;" 
+            type="submit" value="Filtra" class="mb-2" />
         </div>
         
        
@@ -76,7 +80,7 @@
 
 
 
-<table class="table">
+<table id="interventiTable" class="table " >
     <thead>
         <tr>
             <th>
@@ -94,7 +98,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="overflow:scroll">
     
         @foreach (var item in Model.AllInterventiFiltrati)
         {
