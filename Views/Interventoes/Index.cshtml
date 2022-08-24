@@ -79,21 +79,24 @@ style="border:1px solid grey;
 
 
 
-
+<p>Clicca sul nome per ordinare in modo discendente o ascendente. 
+    Di <span class="text-decoration-underline">default</span> sono ordinati per data.</p>
 <table id="interventiTable" class="table " >
     <thead>
         <tr>
-            <th>
-                Tipo Intervento
+            <th> @*Passo i parametri al sort per l'ordinamento per colonna*@
+                <a class=" text-decoration-none " asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"> Tipo Intervento</a>
             </th>
             <th>
-                Data Apertura
+                <a class=" text-decoration-none " asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Data Apertura</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AllInterventiFiltrati[0].Completato)
+                <a class=" text-decoration-none " asp-action="Index" asp-route-sortOrder="@ViewData["StateSortParm"]">@Html.DisplayNameFor(model => model.AllInterventiFiltrati[0].Completato)</a>
+                
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AllInterventiFiltrati[0].Azienda)
+                <a class=" text-decoration-none " asp-action="Index" asp-route-sortOrder="@ViewData["AziendaSortParm"]">@Html.DisplayNameFor(model => model.AllInterventiFiltrati[0].Azienda)</a>
+                
             </th>
             <th></th>
         </tr>

@@ -20,9 +20,47 @@ namespace MyWebSite.Controllers
         }
 
         // GET: Interventoes
-        public async Task<IActionResult> Index(string? InterventoType, string? InterventoDate, bool? InterventoState, string? InterventoAzienda)
+        public async Task<IActionResult> Index(string? InterventoType, 
+            string? InterventoDate, bool? InterventoState, string? InterventoAzienda, string sortOrder)
         {
+            //gestione ordinamento per colonna
+            //cliccando sul titolo si cambia l'ordine ( il sortOrder parameter )
+            ViewData["DateSortParm"] = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+            ViewData["NameSortParm"] = sortOrder == "name_asc" ? "name_desc" : "name_asc";
+            ViewData["StateSortParm"] = sortOrder == "Do" ? "Not_do" : "Do";
+            ViewData["AziendaSortParm"] = sortOrder == "Azienda_asc" ? "Azienda_desc" : "Azienda_asc";
 
+            
+            var interventi = from m in _context.Intervento.Include(i => i.Azienda)
+                             select m;
+
+            switch (sortOrder)
+            {
+                case "date_desc":
+                    interventi = interventi.OrderByDescending(s => s.DataIntervento);
+                    break;
+                case "name_asc":
+                    interventi = interventi.OrderBy(s => s.TipoIntervento);
+                    break;
+                case "name_desc":
+                    interventi = interventi.OrderByDescending(s => s.TipoIntervento);
+                    break;
+                case "Do":
+                    interventi = interventi.OrderBy(s => s.Completato);
+                    break;
+                case "Not_do":
+                    interventi = interventi.OrderByDescending(s => s.Completato);
+                    break;
+                case "Azienda_asc":
+                    interventi = interventi.OrderBy(s => s.Azienda.NomeAzienda);
+                    break;
+                case "Azienda_desc":
+                    interventi = interventi.OrderByDescending(s => s.Azienda.NomeAzienda);
+                    break;
+                default:
+                    interventi = interventi.OrderBy(s => s.DataIntervento);
+                    break;
+            }
 
             //gestione filtri
             // per ricavare gli elementi da mettere nel select
@@ -37,9 +75,9 @@ namespace MyWebSite.Controllers
             IQueryable<string> AziendaQuery = from m in _context.Intervento.Include(i => i.Azienda)
                                             orderby m.Azienda.NomeAzienda
                                             select m.Azienda.NomeAzienda;
-
-            var interventi = from m in _context.Intervento.Include(i => i.Azienda)
-                             select m;
+           // Nota:
+           //Il filtro è gestito a parte dall'ordinamento, quindi è sempre sul totale dei dati,
+           //nelle varie fasi di selezione e scrematura dei dati ( in caso contrario va inserito come return dello switch)
 
             //se filtro per tipo 
             if (!string.IsNullOrEmpty(InterventoType) && string.IsNullOrWhiteSpace(InterventoDate))
@@ -77,7 +115,7 @@ namespace MyWebSite.Controllers
 
             var filterList = new FiltroIntervento
             {
-                //TipoIntervento aggiorna la lista della select
+                //Le "selectlist" aggiornano la lista della select
                 TipoIntervento = new SelectList(await tipoQuery.Distinct().ToListAsync()),
 
                 DataIntervento = new SelectList(await dataQuery.Distinct().ToListAsync()),
