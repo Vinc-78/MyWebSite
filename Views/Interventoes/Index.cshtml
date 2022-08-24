@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-8 text-end ">
-        <a class="bg-warning fw-bold text-black text-decoration-none py-1 px-2 rounded"
+        <a class="btn btn-info fw-bold text-decoration-none py-1 px-2 rounded"
            asp-action="Create">Inserisci nuovo intervento</a>
     </div>
 
@@ -65,9 +65,12 @@ style="border:1px solid grey;
                 </p>
             </div>
         </div>
-        <div class="row align-items-center">
-            <input id="interventiFilter" style="width:150px; margin: auto;" 
-            type="submit" value="Filtra" class="mb-2" />
+        <div class="row justify-content-center">
+            <input id="interventiFilter" style="width:150px;" 
+            type="submit" value="Cerca" class=" btn btn-success p-1 mx-1" />
+
+             <input id="interventiFilter" style="width:150px;" 
+            type="button" value="Annulla" class="btn btn-warning p-1 mx-1" />
         </div>
         
        
@@ -138,7 +141,22 @@ style="border:1px solid grey;
     <h2 style="text-align:center"> Non ci sono elementi per il set del tuo filtro </h2>
 }
 
+@section Scripts {
 
+    @*Gestisco l'azzeramento dei select e il ritorno dei dati con Js/Jquery*@
+    <script type="text/javascript">
+
+        $('input[type="button"]').click(function()
+        {
+            $('select').prop('selectedIndex', 0);  //azzera i select
+            $('form').submit();                    // rifà sul submit per mostrare tutti i dati
+        });
+        
+    
+       
+    
+    </script>
+}
 
 @*Prima dell inserimento dei Filtri*@
 
